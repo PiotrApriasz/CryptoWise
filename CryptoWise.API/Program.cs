@@ -1,25 +1,61 @@
+using System.Text.Json.Serialization;
+using CryptoWise.API.Authorization;
+using CryptoWise.API.Helpers;
+using CryptoWise.API.Middleware;
+using CryptoWise.API.Services.Account;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+{
+    var services = builder.Services;
+    var env = builder.Environment;
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+    services.AddControllers().AddJsonOptions(x =>
+    {
+        x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
+    services.AddEndpointsApiExplorer();
+    services.AddSwaggerGen();
+    services.AddDbContext<DataContext>();
+    services.AddCors();
+    services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+    services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+    
+    services.AddScoped<IJwtUtils, JwtUtils>();
+    services.AddScoped<IAccountService, AccountService>();
+    services.AddScoped<IEmailService, EmailService>();
+}
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// migrate any database changes on startup (includes initial db creation)
+using (var scope = app.Services.CreateScope())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();    
+    dataContext.Database.Migrate();
 }
 
-app.UseHttpsRedirection();
+// Configure the HTTP request pipeline.
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(x => x.SwaggerEndpoint("/swagger/v1/swagger.json", "CryptoWise API"));
+    
+    app.UseCors(x => x
+        .SetIsOriginAllowed(origin => true)
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials());
+    
+    app.UseMiddleware<ErrorHandlingMiddleware>();
+    app.UseMiddleware<JwtMiddleware>();
+    
+    app.UseHttpsRedirection();
 
-app.UseAuthorization();
+    app.UseAuthorization();
 
-app.MapControllers();
+    app.MapControllers();
+}
 
 app.Run();
