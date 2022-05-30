@@ -8,14 +8,14 @@
 
 <div class="page-background-class">
     <MudLayout>
-        <MudAppBar Class="menubar" Elevation="25">
-            <MudImage Src="images/logo.png" Alt="Logo" Class="ml-16" Height="40" Width="40"/>
-            <MudText Typo="Typo.h5" Class="ml-3" >Cryptowise</MudText>
+        <MudAppBar Color="Color.Transparent" Elevation="0" Class="menubar">
+            <MudImage Src="images/logo.png" Alt="Logo" Class="ml-16 mt-16" Height="50" Width="50"/>
+            <MudText Typo="Typo.h5" Class="ml-3 mt-16" >Cryptowise</MudText>
             <MudSpacer/>
-            @if (CheckIfMetaAuth())
-            {
-        
-            }
+            <MudLink Href="https://github.com/PiotrApriasz?tab=repositories">
+                <MudIconButton Icon="@Icons.Custom.Brands.GitHub" aria-label="github" Class="mr-16 mt-16"
+                               Size="Size.Large"></MudIconButton>
+            </MudLink>
         </MudAppBar>
         <MudMainContent>
             @Body
@@ -45,7 +45,7 @@
     .menubar {
          -webkit-backdrop-filter: blur(8px) !important;
           backdrop-filter: blur(8px) !important;
-          background-color: rgba(228,229,231,0.1) !important;
+          height: 100px;
           
     }
         .page-background-class {
@@ -55,7 +55,11 @@
               -o-background-size: cover;
               background-size: cover;
               min-height: 100%;
-              position: fixed;
+              top: 0;
+                  bottom:0;
+                  position:fixed;
+                  overflow-y:scroll;
+                  overflow-x:hidden;
               width: 100%;
               height: auto;
         }
