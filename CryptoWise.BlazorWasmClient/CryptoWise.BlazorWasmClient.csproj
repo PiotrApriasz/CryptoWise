@@ -11,6 +11,14 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.4" PrivateAssets="all" />
 		<PackageReference Include="MudBlazor" Version="6.0.9" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\images" />
+	</ItemGroup>
 	
 	
 </Project>

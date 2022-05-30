@@ -1,7 +1,49 @@
-﻿@page "/"
+﻿@inject NavigationManager _nyNavigationManager
 
-<PageTitle>Index</PageTitle>
+@page "/"
 
-<MudText Typo="Typo.h3" GutterBottom="true">Hello, world!</MudText>
-<MudText Class="mb-8">Welcome to your new app, powered by MudBlazor!</MudText>
-<MudAlert Severity="Severity.Normal">You can find documentation and examples on our website here: <MudLink Href="https://mudblazor.com" Typo="Typo.body2" Color="Color.Inherit"><b>www.mudblazor.com</b></MudLink></MudAlert>
+<MudContainer Class="mt-16">
+    <div class="d-flex justify-center">
+        <MudImage Src="images/logo.png" Alt="Logo" Height="300" Width="300"/>
+    </div>
+    <MudText Typo="Typo.h3" Class="mt-8" Align="Align.Center" GutterBottom="true"><b>Welcome in Cryptowise!</b></MudText>
+    <MudText Align="Align.Center">This is the place where you can take control of all your crypto finances</MudText>
+    <MudGrid Spacing="4" Justify="Justify.Center" Class="mt-10">
+        <MudItem>
+            <MudCard Elevation="25" Class="rounded-lg" Style="width: 360px !important;">
+                <MudCardMedia Image="images/centralized.jpg" Height="200"/>
+                <MudCardContent>
+                    <MudText Typo="Typo.h5">Centralized User</MudText>
+                    <MudText Typo="Typo.body2">Use traditional way for authentication</MudText>
+                    <MudText Typo="Typo.body2">We will create account for you in our local database</MudText>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary">Sign In</MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary">Sign Up</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+        <MudItem>
+            <MudCard Elevation="25" Class="rounded-lg" Style="width: 360px !important;">
+                <MudCardMedia Image="images/decentralized.jpg" Height="200"/>
+                <MudCardContent>
+                    <MudText Typo="Typo.h5">Decentralized User</MudText>
+                    <MudText Typo="Typo.body2">Use decentralized way for authentication</MudText>
+                    <MudText Typo="Typo.body2">We will create account for you with MetaAuth</MudText>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary">Sign In</MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="NavigateToMetaAuthSignUp">Sign Up</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code {
+
+    private void NavigateToMetaAuthSignUp()
+    {
+        _nyNavigationManager.NavigateTo("MetaAuthSignUp");
+    }
+}
