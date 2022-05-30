@@ -2,27 +2,32 @@
 @inject IJSRuntime _jsRuntime;
 @inject NavigationManager _myNavigationManager
 
-<MudThemeProvider />
+<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme"/>
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<MudLayout>
-    <MudAppBar Class="menubar" Elevation="25" >
-        <MudImage Src="images/logo.png" Alt="Logo" Class="ml-16" Height="40" Width="40"/>
-        <MudText Typo="Typo.h5" Class="ml-3" Color="Color.Dark">Cryptowise</MudText>
-        <MudSpacer/>
-        @if (CheckIfMetaAuth())
-        {
+<div class="page-background-class">
+    <MudLayout>
+        <MudAppBar Class="menubar" Elevation="25">
+            <MudImage Src="images/logo.png" Alt="Logo" Class="ml-16" Height="40" Width="40"/>
+            <MudText Typo="Typo.h5" Class="ml-3" >Cryptowise</MudText>
+            <MudSpacer/>
+            @if (CheckIfMetaAuth())
+            {
+        
+            }
+        </MudAppBar>
+        <MudMainContent>
+            @Body
+        </MudMainContent>
+    </MudLayout>
+</div>
 
-        }
-    </MudAppBar>
-    <MudMainContent>
-        @Body
-    </MudMainContent>
-</MudLayout>
 
 @code {
     bool _drawerOpen = true;
+    private bool _isDarkMode = true;
+    private MudTheme _theme = new();
 
     void DrawerToggle()
     {
@@ -40,7 +45,19 @@
     .menubar {
          -webkit-backdrop-filter: blur(8px) !important;
           backdrop-filter: blur(8px) !important;
-          background-color: rgba(228,229,231,0.6) !important;
+          background-color: rgba(228,229,231,0.1) !important;
           
     }
+        .page-background-class {
+            background :url(images/background.png) no-repeat center center fixed;
+            -webkit-background-size: cover;
+              -moz-background-size: cover;
+              -o-background-size: cover;
+              background-size: cover;
+              min-height: 100%;
+              position: fixed;
+              width: 100%;
+              height: auto;
+        }
+    
 </style>
