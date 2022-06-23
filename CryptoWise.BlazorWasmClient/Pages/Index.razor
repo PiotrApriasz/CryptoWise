@@ -4,41 +4,22 @@
 
 
 <MudContainer Class="mt-2">
-    <div class="d-flex justify-center">
-        <MudImage Src="images/logo.png" Alt="Logo" Height="270" Width="270"/>
-    </div>
-    <MudText Typo="Typo.h3" Class="mt-8" Align="Align.Center" GutterBottom="true"><b>Welcome in Cryptowise!</b></MudText>
-    <MudText Typo="Typo.h4" Align="Align.Center">This is the place where you can take control of all your crypto finances</MudText>
-    <MudGrid Spacing="10" Justify="Justify.Center" Class="mt-8">
-        <MudItem>
-            <MudStack Row="true">
-                <MudImage Src="images/central.png" Alt="central" Height="120" Width="120"/>
-                <MudStack Justify="Justify.Center">
-                    <MudText Typo="Typo.h5">Centralized User</MudText>
-                    <MudText Typo="Typo.subtitle2">Use traditional way for authentication</MudText>
-                    <MudText Typo="Typo.subtitle2">We will create account for you in our local database</MudText>
-                </MudStack>
-            </MudStack>
-            <MudStack Row="true" Justify="Justify.Center" Class="mt-5">
-                <MudButton Variant="Variant.Filled" Size="Size.Large" >Sign In</MudButton>
-                <MudButton Variant="Variant.Filled" Size="Size.Large" Class="ml-5">Sign Up</MudButton>
-            </MudStack>
+    <MudGrid Spacing="10" Justify="Justify.FlexStart" Class="mt-8">
+        <MudItem xs="7">
+            <MudText Typo="Typo.h3" Class="mt-8" Align="Align.Left" GutterBottom="true"><b>Welcome in Cryptowise!</b></MudText>
+            <MudText Typo="Typo.h4" Align="Align.Left" Class="mt-10">Here you can take control of all your crypto finances</MudText>
+            <MudText Typo="Typo.body1" Align="Align.Left" Class="mt-5">Lorem ipsum dolor sit amet blandit iriure aliquyam voluptua et quis at.
+                Justo nulla consetetur ipsum duis ea justo invidunt consequat ipsum. Iriure labore nihil
+                ut ipsum sed erat gubergren consetetur ut eos dolor at lorem tincidunt. Feugait mazim invidunt et amet.
+                Magna diam labore.</MudText>
+            <MudButton Class="mt-15 btn-grad" Variant="Variant.Filled" Size="Size.Large">Get Started</MudButton>
         </MudItem>
-        <MudItem>
-            <MudStack Row="true">
-                <MudImage Src="images/nft.png" Alt="nft" Height="120" Width="120"/>
-                <MudStack Justify="Justify.Center">
-                    <MudText Typo="Typo.h5">Decentralized User</MudText>
-                    <MudText Typo="Typo.subtitle2">Use decentralized way for authentication</MudText>
-                    <MudText Typo="Typo.subtitle2">We will create account for you with MetaAuth</MudText>
-                </MudStack>
-            </MudStack>
-            <MudStack Row="true" Justify="Justify.Center" Class="mt-5">
-                <MudButton Variant="Variant.Filled" Size="Size.Large" >Sign In</MudButton>
-                <MudButton Variant="Variant.Filled" Size="Size.Large" Class="ml-5" OnClick="NavigateToMetaAuthSignUp">Sign Up</MudButton>
-            </MudStack>
+        <MudItem xs="5">
+            <MudImage Src="images/banner.png" Alt="Logo" Height="600" Width="635"/>
         </MudItem>
     </MudGrid>
+    <br/>
+    <br/>
 </MudContainer>
 
 @code {
@@ -48,3 +29,24 @@
         _nyNavigationManager.NavigateTo("MetaAuthSignUp");
     }
 }
+
+<style>
+    .btn-grad {
+                background-image: linear-gradient(to right, #DA22FF 0%, #9733EE  51%, #DA22FF  100%);
+                padding: 15px 45px;
+                text-align: center;
+                text-transform: uppercase;
+                transition: 0.5s;
+                background-size: 200% auto;
+                color: white;            
+                box-shadow: 0 0 20px #eee;
+                border-radius: 10px;
+                display: block;
+              }
+    
+              .btn-grad:hover {
+                background-position: right center;
+                color: #fff;
+                text-decoration: none;
+              }
+</style>
