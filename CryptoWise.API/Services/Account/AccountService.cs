@@ -148,7 +148,7 @@ public class AccountService : IAccountService
         
         SendPasswordResetEmail(account, origin);
     }
-    
+
     public void ValidateResetToken(ValidateResetTokenRequest model)
     {
         GetAccountByResetToken(model.Token);
