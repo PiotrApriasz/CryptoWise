@@ -1,4 +1,4 @@
-﻿@inject NavigationManager _nyNavigationManager
+﻿@inject NavigationManager NyNavigationManager
 
 @page "/"
 
@@ -12,7 +12,7 @@
                 Justo nulla consetetur ipsum duis ea justo invidunt consequat ipsum. Iriure labore nihil
                 ut ipsum sed erat gubergren consetetur ut eos dolor at lorem tincidunt. Feugait mazim invidunt et amet.
                 Magna diam labore.</MudText>
-            <MudButton Class="mt-15 btn-grad" Variant="Variant.Filled" Size="Size.Large">Get Started</MudButton>
+            <MudButton Class="mt-15 btn-grad" Variant="Variant.Filled" Size="Size.Large" OnClick="NavigateToSignUp">Get Started</MudButton>
         </MudItem>
         <MudItem xs="5">
             <MudImage Src="images/banner.png" Alt="Logo" Height="600" Width="635"/>
@@ -23,10 +23,10 @@
 </MudContainer>
 
 @code {
-
-    private void NavigateToMetaAuthSignUp()
+    
+    private void NavigateToSignUp()
     {
-        _nyNavigationManager.NavigateTo("MetaAuthSignUp");
+        NyNavigationManager.NavigateTo("SignUp");
     }
 }
 

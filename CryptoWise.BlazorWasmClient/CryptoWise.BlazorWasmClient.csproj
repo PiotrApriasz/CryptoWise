@@ -7,6 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="FluentValidation" Version="11.1.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.4" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.4" PrivateAssets="all" />
 		<PackageReference Include="MudBlazor" Version="6.0.9" />
@@ -17,7 +18,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Components\Dialogs" />
+	  <Folder Include="Components\PageComponents" />
 	  <Folder Include="wwwroot\images" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\CryptoWise.Shared\CryptoWise.Shared.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <AdditionalFiles Include="Components\PageComponents\SignUp\CentralizedSignUp.razor" />
 	</ItemGroup>
 	
 	

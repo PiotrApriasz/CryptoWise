@@ -1,0 +1,87 @@
+﻿@using CryptoWise.BlazorWasmClient.Components.PageComponents.SignUp
+
+@page "/SignUp"
+
+@inject NavigationManager NyNavigationManager
+
+
+<MudContainer Class="mt-2">
+    <MudGrid Spacing="10" Justify="Justify.Center" Class="mt-8">
+        <MudItem>
+            <MudStack Row="true">
+                <MudImage Src="images/central.png" Alt="central" Height="120" Width="120"/>
+                <MudStack Justify="Justify.Center">
+                    <MudText Typo="Typo.h5">Centralized User</MudText>
+                    <MudText Typo="Typo.subtitle2">Use traditional way for authentication</MudText>
+                    <MudText Typo="Typo.subtitle2">We will create account for you in our local database</MudText>
+                </MudStack>
+            </MudStack>
+            <MudStack Row="true" Justify="Justify.Center">
+                <MudButton Class="mt-5 btn-grad" Variant="Variant.Filled" Size="Size.Large" OnClick="ShowCentralizedForm">Go!</MudButton>
+            </MudStack>
+        </MudItem>
+        <MudItem>
+            <MudStack Row="true">
+                <MudImage Src="images/nft.png" Alt="nft" Height="120" Width="120"/>
+                <MudStack Justify="Justify.Center">
+                    <MudText Typo="Typo.h5">Decentralized User</MudText>
+                    <MudText Typo="Typo.subtitle2">Use decentralized way for authentication</MudText>
+                    <MudText Typo="Typo.subtitle2">We will create account for you with MetaAuth</MudText>
+                </MudStack>
+            </MudStack>
+            <MudStack Row="true" Justify="Justify.Center">
+                <MudButton Class="mt-5 btn-grad" Variant="Variant.Filled" Size="Size.Large" OnClick="ShowDecentralizedForm">Go!</MudButton>
+            </MudStack>
+        </MudItem>
+    </MudGrid>
+    
+    @if (_centralizedForm)
+    {
+        <CentralizedSignUp />
+    }
+    @if (_decentralizedForm)
+    {
+        <DecentralizedSignUp />
+    }
+</MudContainer>
+
+@code {
+    private bool _centralizedForm;
+    private bool _decentralizedForm;
+
+    private void ShowCentralizedForm()
+    {
+        _centralizedForm = true;
+    }
+
+    private void ShowDecentralizedForm()
+    {
+        _decentralizedForm = true;
+    }
+
+    private void DecentralizedSignUp()
+    {
+        
+    }
+}
+
+<style>
+    .btn-grad {
+                    background-image: linear-gradient(to right, #DA22FF 0%, #9733EE  51%, #DA22FF  100%);
+                    padding: 15px 45px;
+                    text-align: center;
+                    text-transform: uppercase;
+                    transition: 0.5s;
+                    background-size: 200% auto;
+                    color: white;            
+                    box-shadow: 0 0 20px #eee;
+                    border-radius: 10px;
+                    display: block;
+                  }
+        
+                  .btn-grad:hover {
+                    background-position: right center;
+                    color: #fff;
+                    text-decoration: none;
+                  }
+</style>

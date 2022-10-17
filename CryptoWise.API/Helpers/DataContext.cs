@@ -5,17 +5,17 @@ namespace CryptoWise.API.Helpers;
 
 public class DataContext : DbContext
 {
-    public DbSet<Account> Accounts { get; set; }
+    public DbSet<Account> Accounts { get; set; } = null!;
 
-    private readonly IConfiguration Configuration;
+    private readonly IConfiguration _configuration;
 
     public DataContext(IConfiguration configuration)
     {
-        Configuration = configuration;
+        _configuration = configuration;
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
-        options.UseSqlite(Configuration.GetConnectionString("CryptoWiseDb") ?? string.Empty);
+        options.UseSqlite(_configuration.GetConnectionString("CryptoWiseDb") ?? string.Empty);
     }
 }

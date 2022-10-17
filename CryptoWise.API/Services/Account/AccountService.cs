@@ -296,7 +296,7 @@ public class AccountService : IAccountService
     {
         account.RefreshTokens.RemoveAll(x => 
             !x.IsActive && 
-            x.Created.AddDays(_appSettings.RefreshTokenTTL) <= DateTime.UtcNow);
+            x.Created.AddDays(_appSettings.RefreshTokenTtl) <= DateTime.UtcNow);
     }
     
     private void RevokeDescendantRefreshTokens(RefreshToken refreshToken, Entities.Account account, string ipAddress, string reason)
