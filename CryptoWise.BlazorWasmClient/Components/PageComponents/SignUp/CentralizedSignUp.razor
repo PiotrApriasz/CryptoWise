@@ -1,0 +1,26 @@
+﻿@using CryptoWise.BlazorWasmClient.Validators
+@using CryptoWise.Shared.Account
+
+<MudCard>
+    <MudForm Model="@_model" @ref="@_form" Validation="@_centralizedSignUpValidator" ValidationDelay="0" Class="mt-10">
+        <MudCardContent>
+            <MudTextField @bind-Value="_model.FirstName"
+                                  For="@(() => _model.FirstName)"
+                                  Immediate="true"
+                                  Label="First Name"
+                                  Variant="Variant.Outlined"/>
+        </MudCardContent>
+    </MudForm>
+</MudCard>
+
+
+@code {
+    [Inject]
+    ISnackbar Snackbar { get; set; } = null!;
+
+    MudForm _form = null!;
+
+    CentralizedSignUpValidator _centralizedSignUpValidator = new();
+
+    RegisterRequest _model = new RegisterRequest();
+}

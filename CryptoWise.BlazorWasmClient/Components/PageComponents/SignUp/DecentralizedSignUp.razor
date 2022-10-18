@@ -1,0 +1,61 @@
+﻿@using CryptoWise.BlazorWasmClient.Validators
+@using CryptoWise.BlazorWasmClient.Services
+@using Microsoft.AspNetCore.Components
+@using CryptoWise.BlazorWasmClient.Entities
+
+@inject ISnackbar Snackbar
+@inject IAccountService AccountService 
+@inject IJSRuntime Js
+
+
+<MudCard Elevation="12" Class="glass-panel-form mt-16 md-16">
+    <MudForm Model="@_initiateSignUp" @ref="@_form" Validation="@(_validator.ValidateValue)" ValidationDelay="0">
+        <MudCardContent>
+            <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" Class="mt-1 mb-2">
+                <MudTextField @bind-Value="_initiateSignUp.UserIdentificator"
+                              For="@(() => _initiateSignUp.UserIdentificator)"
+                              Immediate="true"
+                              Label="Username"
+                              InputType="InputType.Text"
+                              Style="width: 310px" Class="ml-6 mb-2"/>
+            </MudStack>
+        </MudCardContent>
+    </MudForm>
+    <MudGrid Justify="Justify.Center" Class="mt-2 mb-5">
+        <MudButton Class="btn-grad mb-5" Size="Size.Large" Variant="Variant.Filled"
+                       OnClick="@(async () => await Submit())">Register</MudButton>
+    </MudGrid>
+</MudCard>
+
+@code {
+    MudForm _form = null!;
+    DecentralizedSignUpValidator _validator = new();
+
+    InitiateSignUpData _initiateSignUp = null!;
+
+    protected override void OnInitialized()
+    {
+        _initiateSignUp = new InitiateSignUpData();
+    }
+
+    private async Task Submit()
+    {
+        // Save username to app's databse
+        var result = await AccountService.InitiateSignUp(_initiateSignUp);
+        await Js.InvokeVoidAsync("window.open", $"https://localhost:7235/signup/{result.RequestGuid}");
+    }
+}
+
+
+<style>
+    .glass-panel-form {
+          color: #fff;
+                margin: 40px auto;
+                background-color: rgba(255,255,255,0.06);
+                width: 700px;
+                border-radius: 15px;
+                backdrop-filter: blur(10px);
+                align-content: center;
+                align-items: center;
+        }
+</style>
