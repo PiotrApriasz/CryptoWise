@@ -6,6 +6,7 @@
 @inject ISnackbar Snackbar
 @inject IAccountService AccountService 
 @inject IJSRuntime Js
+@inject NavigationManager NavManager
 
 
 <MudCard Elevation="12" Class="glass-panel-form mt-16 md-16">
@@ -42,10 +43,10 @@
     {
         // Save username to app's databse
         var result = await AccountService.InitiateSignUp(_initiateSignUp);
-        await Js.InvokeVoidAsync("window.open", $"https://localhost:7235/signup/{result.RequestGuid}");
+        //await Js.InvokeVoidAsync("window.open", $"https://localhost:7235/signup/{result.RequestGuid}");
+        NavManager.NavigateTo($"https://localhost:7235/signup/{result.RequestGuid}");
     }
 }
-
 
 <style>
     .glass-panel-form {

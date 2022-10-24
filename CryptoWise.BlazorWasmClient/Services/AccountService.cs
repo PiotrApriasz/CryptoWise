@@ -20,11 +20,13 @@ public class AccountService : IAccountService
     public async Task<InitiateSignUpResponse> InitiateSignUp(InitiateSignUpData signUpData)
     {
         var appName = _configuration["MetaAuthApi:AppName"];
+        var returlUrl = _configuration["MetaAuthApi:ReturnUrl"];
         var requiredUserData = _configuration.GetSection("MetaAuthApi:RequiredUserData").Get<List<string>>();
 
         var uri = $"{_metaAuthBaseAddress}signup";
         signUpData.AppName = appName;
         signUpData.RequiredUserData = requiredUserData;
+        signUpData.ReturnUrl = returlUrl;
 
         var result = await _client.PostAsJsonAsync(uri, signUpData);
 

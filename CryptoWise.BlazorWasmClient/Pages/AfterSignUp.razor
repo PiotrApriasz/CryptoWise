@@ -1,0 +1,86 @@
+﻿@page "/AfterSignUp/{authProvider}"
+
+@using CryptoWise.BlazorWasmClient.Entities
+@using CryptoWise.BlazorWasmClient.Extensions
+
+@inject NavigationManager NavManager
+
+<MudContainer Class="mt-2">
+    <MudGrid Spacing="10" Justify="Justify.FlexStart" Class="mt-8">
+        <MudItem xs="7">
+            <MudText Typo="Typo.h3" Class="mt-8" Align="Align.Left" GutterBottom="true"><b>Cryptowise Sign Up</b></MudText>
+            <MudText Typo="Typo.h6" Align="Align.Left" Class="mt-10">@_signUpInfo</MudText>
+            <MudStack Row="true">
+                <MudButton Class="mt-15 btn-grad" Variant="Variant.Filled" Size="Size.Large" OnClick="NavigateToHomePage">Home Page</MudButton>
+                <MudButton Class="mt-15 btn-grad" Variant="Variant.Filled" Size="Size.Large" OnClick="NavigateToSignIn">Sign In</MudButton>
+            </MudStack>
+        </MudItem>
+        <MudItem xs="5">
+            <MudImage Src="images/banner.png" Alt="Logo" Height="600" Width="635"/>
+        </MudItem>
+    </MudGrid>
+    <br/>
+    <br/>
+</MudContainer>
+
+@code {
+    [Parameter]
+    public string AuthProvider { get; set; }
+
+    private bool _signUpSuccess;
+    private string? _signUpInfo;
+
+    protected override void OnInitialized()
+    {
+        var result = NavManager.TryGetQueryString("signUpSuccess", out _signUpSuccess);
+
+        if (AuthProvider == "metaauth")
+        {
+            if (_signUpSuccess)
+                _signUpInfo = "You have been successfully registered with MetaAuth provider. Your token is updated " +
+                              "and now you can sign in";
+            else
+                _signUpInfo = "MetaAuth registration has been failed";
+        }
+        else if (AuthProvider == "local")
+        {
+            if (_signUpSuccess)
+                _signUpInfo = "Success";
+            else
+                _signUpInfo = "Failed";
+        }
+    }
+
+    private void NavigateToHomePage()
+    {
+        NavManager.NavigateTo("/");
+    }
+
+    private void NavigateToSignIn()
+    {
+        NavManager.NavigateTo("SignIn");
+    }
+}
+
+
+<style>
+    .btn-grad {
+                background-image: linear-gradient(to right, #DA22FF 0%, #9733EE  51%, #DA22FF  100%);
+                padding: 15px 45px;
+                text-align: center;
+                text-transform: uppercase;
+                transition: 0.5s;
+                background-size: 200% auto;
+                color: white;            
+                box-shadow: 0 0 20px #eee;
+                border-radius: 10px;
+                display: block;
+              }
+    
+              .btn-grad:hover {
+                background-position: right center;
+                color: #fff;
+                text-decoration: none;
+              }
+</style>
+
