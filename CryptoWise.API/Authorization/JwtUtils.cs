@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Globalization;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -28,9 +29,9 @@ public class JwtUtils : IJwtUtils
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim("id", account.Id.ToString()),
-                new Claim(ClaimTypes.NameIdentifier, account.Username.ToString()),
-                new Claim(ClaimTypes.Name, account.Username.ToString())
+                new Claim("id", account.Id),
+                new Claim(ClaimTypes.NameIdentifier, account.Username),
+                new Claim(ClaimTypes.DateOfBirth, account.BirthDate.ToString(CultureInfo.InvariantCulture))
             }),
             Expires = DateTime.UtcNow.AddMinutes(15),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),

@@ -28,7 +28,7 @@ public class ErrorHandlingMiddleware : IMiddleware
             var result = JsonSerializer.Serialize(new BaseResponse
             {
                 Error = true,
-                Message = e?.Message
+                Message = e.Message
             });
             await response.WriteAsync(result);
         }

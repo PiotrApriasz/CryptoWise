@@ -7,6 +7,7 @@ using CryptoWise.API.Authorization;
 using CryptoWise.API.Entities;
 using CryptoWise.API.Exceptions;
 using CryptoWise.API.Helpers;
+using CryptoWise.API.Services.Email;
 using CryptoWise.Shared.Account;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -35,7 +36,7 @@ public class AccountService : IAccountService
     {
         var account = _context.Accounts.SingleOrDefault(x => x.Email == model.Email);
 
-        if (account == null || !account.IsVerified || !BCrypt.Net.BCrypt.Verify(model.Password, account.PasswordHash))
+        if (account is not { IsVerified: true } || !BCrypt.Net.BCrypt.Verify(model.Password, account.PasswordHash))
             throw new AppException("Email or password is incorrect");
 
         var jwtToken = _jwtUtils.GenerateJwtToken(account);
@@ -167,7 +168,7 @@ public class AccountService : IAccountService
         _context.SaveChanges();
     }
     
-    public AccountResponse GetById(int id)
+    public AccountResponse GetById(string id)
     {
         var account = GetAccount(id);
         return _mapper.Map<AccountResponse>(account);
@@ -196,7 +197,7 @@ public class AccountService : IAccountService
         return _mapper.Map<AccountResponse>(account);
     }
     
-    public AccountResponse Update(int id, UpdateRequest model)
+    public AccountResponse Update(string id, UpdateRequest model)
     {
         var account = GetAccount(id);
         
@@ -214,14 +215,14 @@ public class AccountService : IAccountService
         return _mapper.Map<AccountResponse>(account);
     }
     
-    public void Delete(int id)
+    public void Delete(string id)
     {
         var account = GetAccount(id);
         _context.Accounts.Remove(account);
         _context.SaveChanges();
     }
 
-    private Entities.Account GetAccount(int id)
+    private Entities.Account GetAccount(string id)
     {
         var account = _context.Accounts.Find(id);
         if (account == null) throw new KeyNotFoundException("Account not found");
@@ -242,27 +243,7 @@ public class AccountService : IAccountService
         if (account == null) throw new AppException("Invalid token");
         return account;
     }
-    
-    private string GenerateJwtToken(Entities.Account account)
-    {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
-        var tokenDescriptor = new SecurityTokenDescriptor()
-        {
-            Subject = new ClaimsIdentity(new[]
-            {
-                new Claim("id", account.Id.ToString()),
-                new Claim(ClaimTypes.NameIdentifier, account.Username.ToString()),
-                new Claim(ClaimTypes.Name, account.Username.ToString())
-            }),
-            Expires = DateTime.UtcNow.AddMinutes(15),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
-                SecurityAlgorithms.HmacSha256Signature)
-        };
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
-    }
-    
+
     private string GenerateResetToken()
     {
         var token = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));

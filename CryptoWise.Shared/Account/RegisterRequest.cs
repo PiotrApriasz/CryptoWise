@@ -15,6 +15,9 @@ public class RegisterRequest
     public string Email { get; set; }
 
     [Required]
+    public DateTime BirthDate { get; set; }
+
+    [Required]
     [MinLength(6)]
     public string Password { get; set; }
 

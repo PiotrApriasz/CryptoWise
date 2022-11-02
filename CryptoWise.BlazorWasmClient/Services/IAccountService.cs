@@ -1,9 +1,9 @@
-﻿using CryptoWise.BlazorWasmClient.Entities;
-using CryptoWise.Shared;
+﻿using CryptoWise.Shared;
+using CryptoWise.Shared.MetaAuthAccount;
 
 namespace CryptoWise.BlazorWasmClient.Services;
 
 public interface IAccountService
 {
-    Task<InitiateSignUpResponse> InitiateSignUp(InitiateSignUpData signUpData);
+    Task<InitiateSignUpCwResponse> InitiateSignUp();
 }

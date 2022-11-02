@@ -1,0 +1,30 @@
+﻿<MudContainer Class="mt-2">
+    <MudGrid Spacing="10" Justify="Justify.FlexStart" Class="mt-8">
+        <MudItem xs="7">
+            <MudText Typo="Typo.h3" Class="mt-8" Align="Align.Left" GutterBottom="true"><b>Oh no! Something went wrong</b></MudText>
+            <MudText Typo="Typo.h4" Align="Align.Left" Class="mt-10">Error Info:</MudText>
+            <MudText Typo="Typo.body1" Align="Align.Left" Class="mt-5">@errorMessage</MudText>
+        </MudItem>
+        <MudItem xs="5">
+            <MudImage Src="images/banner.png" Alt="Logo" Height="600" Width="635"/>
+        </MudItem>
+    </MudGrid>
+    <br/>
+    <br/>
+</MudContainer>
+
+@code {
+    [Parameter]
+    public Exception? Exception { get; set; }
+
+    private string errorMessage;
+
+    protected override void OnInitialized()
+    {
+        if (Exception is not null)
+            errorMessage = $"Message: {Exception.Message}\n | Stack Trace: {Exception.StackTrace}";
+        else
+            errorMessage = "Unexpected Error occured with no error info!";
+    }
+
+}

@@ -1,5 +1,6 @@
 ﻿using CryptoWise.API.Authorization;
 using CryptoWise.API.Entities;
+using CryptoWise.API.Extensions;
 using CryptoWise.API.Services.Account;
 using CryptoWise.Shared.Account;
 using Microsoft.AspNetCore.Mvc;
@@ -100,20 +101,24 @@ public class AccountController : BaseController
         return Ok(accounts);
     }
     
-    [HttpGet("{id:int}")]
-    public ActionResult<AccountResponse> GetById(int id)
+    [HttpGet("{id}")]
+    public ActionResult<AccountResponse> GetById(string id)
     {
-        if (id != Account.Id && Account.Role != Role.Admin)
+        Account.CheckForNull();
+        
+        if (id != Account!.Id && Account.Role != Role.Admin)
             return Unauthorized(new { message = "Unauthorized" });
 
         var account = _accountService.GetById(id);
         return Ok(account);
     }
     
-    [HttpDelete("{id:int}")]
-    public IActionResult Delete(int id)
+    [HttpDelete("{id}")]
+    public IActionResult Delete(string id)
     {
-        if (id != Account.Id && Account.Role != Role.Admin)
+        Account.CheckForNull();
+        
+        if (id != Account!.Id && Account.Role != Role.Admin)
             return Unauthorized(new { message = "Unauthorized" });
 
         _accountService.Delete(id);

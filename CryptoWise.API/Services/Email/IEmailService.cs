@@ -1,4 +1,4 @@
-﻿namespace CryptoWise.API.Services.Account;
+﻿namespace CryptoWise.API.Services.Email;
 
 public interface IEmailService
 {

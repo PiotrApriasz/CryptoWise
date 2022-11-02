@@ -1,11 +1,12 @@
 ﻿using MailKit.Net.Smtp;
 using CryptoWise.API.Helpers;
+using CryptoWise.API.Services.Email;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Text;
 
-namespace CryptoWise.API.Services.Account;
+namespace CryptoWise.API.Services.Email;
 
 public class EmailService : IEmailService
 {

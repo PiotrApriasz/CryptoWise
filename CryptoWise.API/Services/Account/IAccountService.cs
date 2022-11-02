@@ -13,8 +13,8 @@ public interface IAccountService
     void ValidateResetToken(ValidateResetTokenRequest model);
     void ResetPassword(ResetPasswordRequest model);
     IEnumerable<AccountResponse> GetAll();
-    AccountResponse GetById(int id);
+    AccountResponse GetById(string id);
     AccountResponse Create(CreateRequest model);
-    AccountResponse Update(int id, UpdateRequest model);
-    void Delete(int id);
+    AccountResponse Update(string id, UpdateRequest model);
+    void Delete(string id);
 }

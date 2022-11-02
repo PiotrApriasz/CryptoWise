@@ -1,8 +1,10 @@
 ﻿@using CryptoWise.BlazorWasmClient.Components.PageComponents.SignUp
+@using CryptoWise.BlazorWasmClient.Services
 
 @page "/SignUp"
 
-@inject NavigationManager NyNavigationManager
+@inject NavigationManager NavManager
+@inject IAccountService AccountService
 
 
 <MudContainer Class="mt-2">
@@ -30,7 +32,7 @@
                 </MudStack>
             </MudStack>
             <MudStack Row="true" Justify="Justify.Center">
-                <MudButton Class="mt-5 btn-grad" Variant="Variant.Filled" Size="Size.Large" OnClick="ShowDecentralizedForm">Go!</MudButton>
+                <MudButton Class="mt-5 btn-grad" Variant="Variant.Filled" Size="Size.Large" OnClick="DecentralizedSignUp">Go!</MudButton>
             </MudStack>
         </MudItem>
     </MudGrid>
@@ -39,29 +41,23 @@
     {
         <CentralizedSignUp />
     }
-    @if (_decentralizedForm)
-    {
-        <DecentralizedSignUp />
-    }
 </MudContainer>
 
 @code {
+    [CascadingParameter]
+    public Error? Error { get; set; }
+    
     private bool _centralizedForm;
-    private bool _decentralizedForm;
 
     private void ShowCentralizedForm()
     {
         _centralizedForm = true;
     }
 
-    private void ShowDecentralizedForm()
+    private async Task DecentralizedSignUp()
     {
-        _decentralizedForm = true;
-    }
-
-    private void DecentralizedSignUp()
-    {
-        
+        var result = await AccountService.InitiateSignUp();
+        NavManager.NavigateTo(result.FullSignUpAddress);
     }
 }
 

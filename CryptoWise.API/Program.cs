@@ -3,6 +3,7 @@ using CryptoWise.API.Authorization;
 using CryptoWise.API.Helpers;
 using CryptoWise.API.Middleware;
 using CryptoWise.API.Services.Account;
+using CryptoWise.API.Services.Email;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,13 @@ var builder = WebApplication.CreateBuilder(args);
 {
     var services = builder.Services;
     var env = builder.Environment;
+    
+    services.AddHttpClient("MetaAuthClient", client =>
+    {
+        client.BaseAddress = new Uri(builder.Configuration["MetaAuth:Url"]);
+        client.Timeout = new TimeSpan(0, 0, 30);
+        client.DefaultRequestHeaders.Clear();
+    });
 
     services.AddControllers().AddJsonOptions(x =>
     {
@@ -21,11 +29,17 @@ var builder = WebApplication.CreateBuilder(args);
     services.AddDbContext<DataContext>();
     services.AddCors();
     services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+    services.AddScoped<ErrorHandlingMiddleware>();
+    services.AddScoped<JwtMiddleware>();
+
     services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+    services.Configure<MetaAuth>(builder.Configuration.GetSection("MetaAuth"));
     
     services.AddScoped<IJwtUtils, JwtUtils>();
     services.AddScoped<IAccountService, AccountService>();
     services.AddScoped<IEmailService, EmailService>();
+    services.AddScoped<IMetaAuthAccountService, MetaAuthAccountService>();
 }
 
 var app = builder.Build();
