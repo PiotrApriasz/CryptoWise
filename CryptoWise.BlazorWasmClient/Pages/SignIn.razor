@@ -1,13 +1,17 @@
-﻿@using CryptoWise.BlazorWasmClient.Components.PageComponents.SignUp
-@using CryptoWise.BlazorWasmClient.Services
+﻿@using CryptoWise.BlazorWasmClient.Services
+@using CryptoWise.BlazorWasmClient.Extensions
 
-@page "/SignUp"
+@page "/SignIn"
 
-@inject NavigationManager NavManager
 @inject IAccountService AccountService
-
+@inject NavigationManager NavManager
 
 <MudContainer Class="mt-2">
+    
+    <MudOverlay Visible="_guidExists" DarkBackground="true" Absolute="true">
+        <MudProgressCircular Color="Color.Primary" Style="height:100px;width:100px;" Indeterminate="true"/>
+    </MudOverlay>
+
     <MudGrid Spacing="10" Justify="Justify.Center" Class="mt-8">
         <MudItem>
             <MudStack Row="true">
@@ -15,7 +19,7 @@
                 <MudStack Justify="Justify.Center">
                     <MudText Typo="Typo.h5">Centralized User</MudText>
                     <MudText Typo="Typo.subtitle2">Use traditional way for authentication</MudText>
-                    <MudText Typo="Typo.subtitle2">We will create account for you in our local database</MudText>
+                    <MudText Typo="Typo.subtitle2">You will use your account registered in our databse</MudText>
                 </MudStack>
             </MudStack>
             <MudStack Row="true" Justify="Justify.Center">
@@ -28,33 +32,47 @@
                 <MudStack Justify="Justify.Center">
                     <MudText Typo="Typo.h5">Decentralized User</MudText>
                     <MudText Typo="Typo.subtitle2">Use decentralized way for authentication</MudText>
-                    <MudText Typo="Typo.subtitle2">We will create account for you with MetaAuth</MudText>
+                    <MudText Typo="Typo.subtitle2">You will use your account from MetaAuth</MudText>
                 </MudStack>
             </MudStack>
             <MudStack Row="true" Justify="Justify.Center">
-                <MudButton Class="mt-5 btn-grad" Variant="Variant.Filled" Size="Size.Large" OnClick="DecentralizedSignUp">Go!</MudButton>
+                <MudButton Class="mt-5 btn-grad" Variant="Variant.Filled" Size="Size.Large" OnClick="DecentralizedSignIn">Go!</MudButton>
             </MudStack>
         </MudItem>
     </MudGrid>
-    
+
     @if (_centralizedForm)
     {
-        <CentralizedSignUp />
+
     }
+
 </MudContainer>
 
 @code {
     private bool _centralizedForm;
+    private bool _guidExists;
+    private string _requestGuid;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _guidExists = NavManager.TryGetQueryString("requestGuid", out _requestGuid);
+        
+        if (_guidExists && _requestGuid is not null)
+        {
+            var result = await AccountService.GetJwtToken(_requestGuid);
+            
+        }
+    }
 
     private void ShowCentralizedForm()
     {
         _centralizedForm = true;
     }
 
-    private async Task DecentralizedSignUp()
+    private async Task DecentralizedSignIn()
     {
-        var result = await AccountService.InitiateSignUp();
-        NavManager.NavigateTo(result.FullSignUpAddress);
+        var result = await AccountService.InitiateSignIn();
+        NavManager.NavigateTo(result.FullSignInAddress);
     }
 }
 

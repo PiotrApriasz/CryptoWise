@@ -11,7 +11,10 @@
             <MudText Typo="Typo.h6" Align="Align.Left" Class="mt-10">@_signUpInfo</MudText>
             <MudStack Row="true">
                 <MudButton Class="mt-15 btn-grad" Variant="Variant.Filled" Size="Size.Large" OnClick="NavigateToHomePage">Home Page</MudButton>
-                <MudButton Class="mt-15 btn-grad" Variant="Variant.Filled" Size="Size.Large" OnClick="NavigateToSignIn">Sign In</MudButton>
+                @if (_signUpSuccess)
+                {
+                    <MudButton Class="mt-15 btn-grad" Variant="Variant.Filled" Size="Size.Large" OnClick="NavigateToSignIn">Sign In</MudButton>   
+                }
             </MudStack>
         </MudItem>
         <MudItem xs="5">
@@ -31,7 +34,7 @@
 
     protected override void OnInitialized()
     {
-        var result = NavManager.TryGetQueryString("signUpSuccess", out _signUpSuccess);
+        NavManager.TryGetQueryString("signUpSuccess", out _signUpSuccess);
 
         if (AuthProvider == "metaauth")
         {

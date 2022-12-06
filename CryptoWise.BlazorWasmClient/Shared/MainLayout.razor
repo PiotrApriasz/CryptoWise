@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @inject IJSRuntime _jsRuntime;
-@inject NavigationManager _myNavigationManager
+@inject NavigationManager NavigationManager
 
 <MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme"/>
 <MudDialogProvider />
@@ -13,7 +13,7 @@
             <MudText Typo="Typo.h5" Class="ml-3 mt-16" ><strong>Cryptowise</strong></MudText>
             <MudSpacer/>
             <MudButton Variant="Variant.Text" Color="Color.Transparent" EndIcon="@Icons.Material.Rounded.Login"
-                       Class="mt-16 mr-10">Sign In</MudButton>
+                       Class="mt-16 mr-10" OnClick="NavigateToSignIn">Sign In</MudButton>
             <MudLink Href="https://github.com/PiotrApriasz?tab=repositories">
                 <MudIconButton Icon="@Icons.Custom.Brands.GitHub" aria-label="github" Class="mr-16 mt-16"
                                Size="Size.Large"></MudIconButton>
@@ -48,14 +48,19 @@
 
     private bool CheckIfMetaAuth()
     {
-        Console.WriteLine(_myNavigationManager.Uri[(_myNavigationManager.Uri.LastIndexOf('/') + 1)..]);
-        return _myNavigationManager.Uri[(_myNavigationManager.Uri.LastIndexOf('/') + 1)..] == "MetaAuthSignUp";
+        Console.WriteLine(NavigationManager.Uri[(NavigationManager.Uri.LastIndexOf('/') + 1)..]);
+        return NavigationManager.Uri[(NavigationManager.Uri.LastIndexOf('/') + 1)..] == "MetaAuthSignUp";
     }
 
     private async void OnError(Exception ex)
     {
         await DialogService.ShowMessageBox("Error", ex.Message);
         StateHasChanged();
+    }
+
+    private void NavigateToSignIn()
+    {
+        NavigationManager.NavigateTo("SignIn");
     }
 }
 
