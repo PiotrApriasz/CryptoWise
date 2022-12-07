@@ -1,6 +1,13 @@
-﻿@inherits LayoutComponentBase
-@inject IJSRuntime _jsRuntime;
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Blazored.LocalStorage
+@using CryptoWise.BlazorWasmClient.Authentication
+@inherits LayoutComponentBase
+
+@inject IJSRuntime JsRuntime;
 @inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider 
+@inject IAuthenticationService AuthenticationService
+
 
 <MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme"/>
 <MudDialogProvider />
@@ -12,12 +19,21 @@
             <MudImage Src="images/logo.png" Alt="Logo" Class="ml-16 mt-16" Height="50" Width="50"/>
             <MudText Typo="Typo.h5" Class="ml-3 mt-16" ><strong>Cryptowise</strong></MudText>
             <MudSpacer/>
-            <MudButton Variant="Variant.Text" Color="Color.Transparent" EndIcon="@Icons.Material.Rounded.Login"
-                       Class="mt-16 mr-10" OnClick="NavigateToSignIn">Sign In</MudButton>
-            <MudLink Href="https://github.com/PiotrApriasz?tab=repositories">
-                <MudIconButton Icon="@Icons.Custom.Brands.GitHub" aria-label="github" Class="mr-16 mt-16"
-                               Size="Size.Large"></MudIconButton>
-            </MudLink>
+            <AuthorizeView>
+                <Authorized>
+                    <MudText Typo="Typo.h6" Class="ml-3 mt-16 mr-3">@CreateUsername(context)</MudText>
+                    <MudButton Variant="Variant.Text" Color="Color.Transparent" EndIcon="@Icons.Material.Rounded.Logout"
+                               Class="mt-16 mr-10" OnClick="SignOut">Sign Out</MudButton>
+                </Authorized>
+                <NotAuthorized>
+                    <MudButton Variant="Variant.Text" Color="Color.Transparent" EndIcon="@Icons.Material.Rounded.Login"
+                               Class="mt-16 mr-10" OnClick="NavigateToSignIn">Sign In</MudButton>
+                    <MudLink Href="https://github.com/PiotrApriasz?tab=repositories">
+                        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" aria-label="github" Class="mr-16 mt-16"
+                                       Size="Size.Large"></MudIconButton>
+                    </MudLink>
+                </NotAuthorized>
+            </AuthorizeView>
         </MudAppBar>
         <MudMainContent>
             <ErrorBoundary>
@@ -37,19 +53,29 @@
     bool _drawerOpen = true;
     private bool _isDarkMode = false;
     private MudTheme _theme = new();
-    
+
     [Inject] 
     private IDialogService DialogService { get; set; } = null!;
+    
 
-    void DrawerToggle()
+    protected override async Task OnInitializedAsync()
     {
-        _drawerOpen = !_drawerOpen;
+        /*var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        if (authState.User.Identity!.IsAuthenticated)
+        {
+            //var name = authState.User.Claims.First(x => x.Type == "name").Value;
+            //var surname = authState.User.Claims.First(x => x.Type == "surname").Value;
+            var surname = authState.User.Claims.First(x => x.Type == "birthDate").Value;
+            _welcomeInfo = $"{surname}'s Dashboard";
+        }*/
     }
 
-    private bool CheckIfMetaAuth()
+    private string CreateUsername(AuthenticationState context)
     {
-        Console.WriteLine(NavigationManager.Uri[(NavigationManager.Uri.LastIndexOf('/') + 1)..]);
-        return NavigationManager.Uri[(NavigationManager.Uri.LastIndexOf('/') + 1)..] == "MetaAuthSignUp";
+        //var name = authState.User.Claims.First(x => x.Type == "name").Value;
+        //var surname = authState.User.Claims.First(x => x.Type == "surname").Value;
+        var surname = context.User.Claims.First(x => x.Type == "id").Value;
+        return $"{surname}'s Dashboard";
     }
 
     private async void OnError(Exception ex)
@@ -61,6 +87,12 @@
     private void NavigateToSignIn()
     {
         NavigationManager.NavigateTo("SignIn");
+    }
+
+    private async Task SignOut()
+    {
+        await AuthenticationService.Logout();
+        NavigationManager.NavigateTo("/");
     }
 }
 

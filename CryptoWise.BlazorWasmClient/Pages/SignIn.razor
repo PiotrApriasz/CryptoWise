@@ -1,10 +1,13 @@
 ﻿@using CryptoWise.BlazorWasmClient.Services
 @using CryptoWise.BlazorWasmClient.Extensions
+@using CryptoWise.BlazorWasmClient.Authentication
+@using CryptoWise.Shared.Exceptions
 
 @page "/SignIn"
 
 @inject IAccountService AccountService
 @inject NavigationManager NavManager
+@inject IAuthenticationService AuthenticationService 
 
 <MudContainer Class="mt-2">
     
@@ -60,7 +63,11 @@
         if (_guidExists && _requestGuid is not null)
         {
             var result = await AccountService.GetJwtToken(_requestGuid);
-            
+            if (await AuthenticationService.Authenticate(result))
+                NavManager.NavigateTo("Home");
+            else
+                throw new MetaAuthException("Something went wrong while authenticating with MetaAuth");
+
         }
     }
 

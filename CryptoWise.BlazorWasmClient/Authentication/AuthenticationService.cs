@@ -30,7 +30,7 @@ public class AuthenticationService : IAuthenticationService
                 throw new CustomAuthenticationException(tokenResponse.Message);
 
             if (tokenResponse.JwtToken == string.Empty) return false;
-            
+
             await _localStorage.SetItemAsync("token", tokenResponse.JwtToken);
                 
             ((CustomAuthenticationStateProvider)_authenticationStateProvider).SetUserAuthenticated(tokenResponse.JwtToken);

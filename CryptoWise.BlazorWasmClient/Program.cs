@@ -3,6 +3,7 @@ using CryptoWise.BlazorWasmClient;
 using CryptoWise.BlazorWasmClient.Authentication;
 using CryptoWise.BlazorWasmClient.Authorization;
 using CryptoWise.BlazorWasmClient.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -20,5 +21,8 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+
+builder.Services.AddOptions();
+builder.Services.AddAuthorizationCore();
 
 await builder.Build().RunAsync();
