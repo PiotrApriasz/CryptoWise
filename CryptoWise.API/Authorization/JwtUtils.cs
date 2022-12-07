@@ -29,8 +29,9 @@ public class JwtUtils : IJwtUtils
         {
             Subject = new ClaimsIdentity(new[]
             {
+                new Claim("type", JwtType.Local.ToString()),
                 new Claim("id", account.Id),
-                new Claim(ClaimTypes.NameIdentifier, account.Username),
+                new Claim(ClaimTypes.NameIdentifier, $"{account.FirstName} {account.LastName}"),
                 new Claim(ClaimTypes.DateOfBirth, account.BirthDate.ToString(CultureInfo.InvariantCulture))
             }),
             Expires = DateTime.UtcNow.AddMinutes(15),
@@ -41,7 +42,7 @@ public class JwtUtils : IJwtUtils
         return tokenHandler.WriteToken(token);
     }
 
-    public int? ValidateJwtToken(string? token)
+    public TokenValidationResult? ValidateJwtToken(string? token)
     {
         if (token == null)
             return null;
@@ -60,9 +61,28 @@ public class JwtUtils : IJwtUtils
             }, out var validatedToken);
             
             var jwtToken = (JwtSecurityToken)validatedToken;
-            var accountId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
+            var accountId = jwtToken.Claims.First(x => x.Type == "id").Value;
+            var tokenIssuer = (JwtType)Enum.Parse(typeof(JwtType), jwtToken.Claims.First(x => x.Type == "type").Value);
 
-            return accountId;
+            Account? metaAccount = null;
+
+            if (tokenIssuer is JwtType.MetaAuth)
+            {
+                metaAccount = new Account()
+                {
+                    Id = accountId,
+                    BirthDate = Convert.ToDateTime(jwtToken.Claims.First(x => x.Type == "birthDate").Value),
+                    FirstName = jwtToken.Claims.First(x => x.Type == "name").Value,
+                    LastName = jwtToken.Claims.First(x => x.Type == "surname").Value,
+                    Email = jwtToken.Claims.First(x => x.Type == "email").Value
+                };
+            }
+
+            return new TokenValidationResult
+            {
+                Id = accountId,
+                Account = metaAccount
+            };
         }
         catch
         {

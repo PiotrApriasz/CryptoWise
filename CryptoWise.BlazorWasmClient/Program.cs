@@ -1,5 +1,9 @@
+using Blazored.LocalStorage;
 using CryptoWise.BlazorWasmClient;
+using CryptoWise.BlazorWasmClient.Authentication;
+using CryptoWise.BlazorWasmClient.Authorization;
 using CryptoWise.BlazorWasmClient.Services;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
@@ -10,7 +14,11 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(_ => new HttpClient());
 builder.Services.AddMudServices();
+builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 await builder.Build().RunAsync();

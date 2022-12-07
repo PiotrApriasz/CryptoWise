@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Authorization
+
+@page "/Home"
+@attribute [Authorize]
+
+
+<MudContainer Class="mt-2">
+    <MudGrid Spacing="10" Justify="Justify.FlexStart" Class="mt-8">
+        <MudItem xs="7">
+            <MudText Typo="Typo.h3" Class="mt-8" Align="Align.Left" GutterBottom="true"><b>This is your dashboard!</b></MudText>
+            <MudText Typo="Typo.h4" Align="Align.Left" Class="mt-10">Here you can take control of all your crypto finances</MudText>
+            <MudText Typo="Typo.body1" Align="Align.Left" Class="mt-5">Lorem ipsum dolor sit amet blandit iriure aliquyam voluptua et quis at.
+                Justo nulla consetetur ipsum duis ea justo invidunt consequat ipsum. Iriure labore nihil
+                ut ipsum sed erat gubergren consetetur ut eos dolor at lorem tincidunt. Feugait mazim invidunt et amet.
+                Magna diam labore.</MudText>
+        </MudItem>
+        <MudItem xs="5">
+            <MudImage Src="images/banner.png" Alt="Logo" Height="600" Width="635"/>
+        </MudItem>
+    </MudGrid>
+    <br/>
+    <br/>
+</MudContainer>
+
+@code {
+    private bool _loading;
+    
+}
